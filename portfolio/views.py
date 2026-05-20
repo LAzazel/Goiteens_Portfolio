@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
 from django.conf import settings
 
-from .models import Experience, Project, Skill, Order, Review
+from .models import Experience, Project, Skill, Order
 from .forms import OrderForm, ReviewForm
 
 
@@ -32,8 +32,26 @@ def projects_list(request):
 
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
-    review_form = ReviewForm()
-    return render(request, "projects/detail.html", {"project": project, "review_form": review_form})
+    if request.method == "POST":
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.project = project
+            review.visible = False
+            review.save()
+            return redirect(f"{request.path}?review=sent")
+    else:
+        review_form = ReviewForm()
+
+    return render(
+        request,
+        "projects/detail.html",
+        {
+            "project": project,
+            "review_form": review_form,
+            "visible_reviews": project.reviews.filter(visible=True),
+        },
+    )
 
 
 def create_order(request):

@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.test import override_settings
-from .models import Order
+from django.utils import timezone
+from .models import Order, Project, Review
 from django.core import mail
 
 
@@ -25,5 +26,35 @@ class OrderTests(TestCase):
         self.assertEqual(Order.objects.count(), 1)
         # Проверяем, что отправляются письма (уведомление владельцу и подтверждение клиенту)
         self.assertGreaterEqual(len(mail.outbox), 1)
+
+
+class ReviewTests(TestCase):
+    def setUp(self):
+        self.project = Project.objects.create(
+            title="Test project",
+            description="Description",
+            technologies="Django, Bootstrap",
+            created_at=timezone.now().date(),
+        )
+
+    def test_review_form_renders(self):
+        response = self.client.get(reverse("project_detail", args=[self.project.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Залишити відгук")
+
+    def test_review_post_creates_hidden_review_and_redirects(self):
+        response = self.client.post(
+            reverse("project_detail", args=[self.project.pk]),
+            {
+                "client_name": "Olha",
+                "text": "Great work",
+                "rating": 5,
+            },
+        )
+        self.assertRedirects(response, f"{reverse('project_detail', args=[self.project.pk])}?review=sent")
+        review = Review.objects.get(project=self.project)
+        self.assertFalse(review.visible)
+        self.assertEqual(review.client_name, "Olha")
+        self.assertEqual(review.text, "Great work")
 
 

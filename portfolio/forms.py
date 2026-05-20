@@ -30,5 +30,10 @@ class OrderForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ["client_name", "text", "rating", "project"]
+        fields = ["client_name", "text", "rating"]
+        widgets = {
+            "client_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ваше ім'я"}),
+            "text": forms.Textarea(attrs={"class": "form-control", "rows": 4, "placeholder": "Ваш відгук"}),
+            "rating": forms.NumberInput(attrs={"class": "form-control", "min": 1, "max": 5}),
+        }
 
