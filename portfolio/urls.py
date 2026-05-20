@@ -7,6 +7,7 @@ from .views import (
     create_order,
     order_thanks,
     dashboard_orders,
+    reviews_list,
 )
 
 urlpatterns = [
@@ -16,5 +17,6 @@ urlpatterns = [
     path("order/", create_order, name="create_order"),
     path("order/thanks/", order_thanks, name="order_thanks"),
     path("dashboard/orders/", dashboard_orders, name="dashboard_orders"),
+    path("reviews/", reviews_list, name="reviews_list"),
 ]
 

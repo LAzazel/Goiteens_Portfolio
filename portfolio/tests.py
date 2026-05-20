@@ -57,4 +57,26 @@ class ReviewTests(TestCase):
         self.assertEqual(review.client_name, "Olha")
         self.assertEqual(review.text, "Great work")
 
+    def test_reviews_list_shows_only_visible_reviews(self):
+        visible_review = Review.objects.create(
+            client_name="Anna",
+            text="Nice job",
+            rating=5,
+            project=self.project,
+            visible=True,
+        )
+        Review.objects.create(
+            client_name="Hidden",
+            text="Should not show",
+            rating=1,
+            project=self.project,
+            visible=False,
+        )
+
+        response = self.client.get(reverse("reviews_list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, visible_review.client_name)
+        self.assertContains(response, visible_review.text)
+        self.assertNotContains(response, "Should not show")
+
 

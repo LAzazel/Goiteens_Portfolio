@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
 from django.conf import settings
 
-from .models import Experience, Project, Skill, Order
+from .models import Experience, Project, Skill, Order, Review
 from .forms import OrderForm, ReviewForm
 
 
@@ -100,5 +100,10 @@ def dashboard_orders(request):
     if status:
         qs = qs.filter(status=status)
     return render(request, "dashboard/orders.html", {"orders": qs})
+
+
+def reviews_list(request):
+    reviews = Review.objects.filter(visible=True).select_related("project").order_by("-created_at")
+    return render(request, "reviews/list.html", {"reviews": reviews})
 
 

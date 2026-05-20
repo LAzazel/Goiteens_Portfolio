@@ -40,7 +40,10 @@
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Проекти</h2>
-        <a class="btn btn-sm btn-outline-primary" href="{% url 'projects_list' %}">Усі проекти</a>
+        <div class="d-flex gap-2">
+          <a class="btn btn-sm btn-outline-primary" href="{% url 'projects_list' %}">Усі проекти</a>
+          <a class="btn btn-sm btn-success" href="{% url 'reviews_list' %}">Дивитись відгуки</a>
+        </div>
       </div>
       <div class="row">
         {% for project in projects %}

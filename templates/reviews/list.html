@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Відгуки — DevPortfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="mb-1">Відгуки клієнтів</h1>
+      <p class="text-muted mb-0">Тут показані тільки опубліковані відгуки.</p>
+    </div>
+    <a href="{% url 'home' %}" class="btn btn-outline-secondary">На головну</a>
+  </div>
+
+  <div class="row g-4">
+    {% for review in reviews %}
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0">{{ review.client_name }}</h5>
+              <span class="badge bg-warning text-dark">{{ review.rating }}/5</span>
+            </div>
+            <p class="card-text">{{ review.text }}</p>
+            {% if review.project %}
+              <a href="{% url 'project_detail' review.project.pk %}" class="small text-decoration-none">Проєкт: {{ review.project.title }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-light border">Поки що немає опублікованих відгуків.</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
