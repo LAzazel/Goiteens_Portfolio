@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Дякуємо — DevPortfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1>Дякуємо!</h1>
+  <p>Ми отримали вашу заявку. Очікуйте на відповідь найближчим часом.</p>
+  <a href="{% url 'home' %}" class="btn btn-secondary">На головну</a>
+</div>
+{% endblock %}
+

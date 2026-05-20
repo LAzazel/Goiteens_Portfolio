@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Проекти — DevPortfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1>Проекти</h1>
+  {% if filter_tech %}
+    <p>Фільтр: <strong>{{ filter_tech }}</strong> — <a href="{% url 'projects_list' %}">Очистити</a></p>
+  {% endif %}
+  <div class="row">
+    {% for project in projects %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          {% if project.image %}
+            <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ project.title }}</h5>
+            <p class="card-text">{{ project.description|truncatewords:30 }}</p>
+            <p class="text-muted">{{ project.technologies }}</p>
+            <a href="{% url 'project_detail' project.pk %}" class="stretched-link">Детальніше</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted">Проекти ще не додані.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

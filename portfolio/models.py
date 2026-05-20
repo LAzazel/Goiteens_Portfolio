@@ -48,3 +48,45 @@ class Experience(models.Model):
 
     def __str__(self):
         return f"{self.position} @ {self.company}"
+
+
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ("new", "New"),
+        ("in_progress", "In progress"),
+        ("completed", "Completed"),
+        ("rejected", "Rejected"),
+    ]
+
+    client_name = models.CharField(max_length=120)
+    client_email = models.EmailField()
+    client_phone = models.CharField(max_length=40, blank=True)
+    title = models.CharField(max_length=200, help_text="Короткий заголовок проєкту")
+    description = models.TextField()
+    budget = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    deadline = models.DateField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="new")
+    processed_by = models.ForeignKey("auth.User", null=True, blank=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Order #{self.pk} - {self.title} ({self.client_name})"
+
+
+class Review(models.Model):
+    client_name = models.CharField(max_length=120)
+    text = models.TextField()
+    rating = models.PositiveSmallIntegerField(default=5, help_text="1-5")
+    project = models.ForeignKey(Project, null=True, blank=True, on_delete=models.SET_NULL, related_name="reviews")
+    created_at = models.DateTimeField(auto_now_add=True)
+    visible = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Review by {self.client_name} ({self.rating})"
+

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ project.title }} — DevPortfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>{{ project.title }}</h1>
+      <p class="text-muted">{{ project.technologies }}</p>
+      <p>{{ project.description }}</p>
+      {% if project.images.all %}
+        <div class="mt-4">
+          <h5>Галерея</h5>
+          <div class="row">
+            {% for img in project.images.all %}
+              <div class="col-md-4 mb-3">
+                <img src="{{ img.image.url }}" class="img-fluid" alt="{{ img.caption }}">
+                {% if img.caption %}<div class="text-muted small">{{ img.caption }}</div>{% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+      <hr>
+      <h5>Відгуки</h5>
+      {% for r in project.reviews.filter(visible=True) %}
+        <div class="border p-3 mb-2">
+          <strong>{{ r.client_name }}</strong> — <span class="text-warning">{{ r.rating }}/5</span>
+          <p>{{ r.text }}</p>
+        </div>
+      {% empty %}
+        <p class="text-muted">Відгуків ще немає.</p>
+      {% endfor %}
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3">
+        <h5>Замовити схожий проєкт</h5>
+        <a href="{% url 'create_order' %}" class="btn btn-primary">Заповнити бриф</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

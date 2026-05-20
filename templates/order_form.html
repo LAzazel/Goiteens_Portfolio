@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Замовлення проєкту — DevPortfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1>Заявка на проєкт</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        <div class="text-danger">{{ field.errors }}</div>
+        {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+      </div>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Відправити</button>
+  </form>
+</div>
+{% endblock %}
+
