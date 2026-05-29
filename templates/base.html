@@ -17,6 +17,18 @@
           <li class="nav-item"><a class="nav-link" href="{% url 'projects_list' %}">Проекти</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'reviews_list' %}">Відгуки</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'create_order' %}">Замовити</a></li>
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'profile_detail' %}">Профіль</a></li>
+            <li class="nav-item">
+              <form method="post" action="{% url 'logout' %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link nav-link">Вийти</button>
+              </form>
+            </li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Увійти</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Реєстрація</a></li>
+          {% endif %}
         </ul>
       </div>
     </div>
@@ -36,4 +48,3 @@
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>
-

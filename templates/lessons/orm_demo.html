@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>Урок: Django ORM — filter, exclude, Q</h1>
+  <p>Приклади запитів та SQL, який вони генерують.</p>
+
+  {% for ex in examples %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ ex.title }}</h5>
+        <p><strong>SQL:</strong> <code style="white-space: pre-wrap;">{{ ex.sql }}</code></p>
+        <p><strong>Результат (перші 20):</strong></p>
+        <ul>
+          {% for obj in ex.qs %}
+            <li>{{ obj }}</li>
+          {% empty %}
+            <li>Немає результатів</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% endfor %}
+
+</div>
+{% endblock %}
+

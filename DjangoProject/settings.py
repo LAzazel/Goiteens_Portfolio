@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
     'portfolio',
 ]
 
@@ -137,3 +138,10 @@ EMAIL_BACKEND = os.environ.get('DJANGO_EMAIL_BACKEND', 'django.core.mail.backend
 # Allowed hosts (set via env in production)
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# Use custom user model from accounts app.
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Auth redirects for regular users.
+LOGIN_REDIRECT_URL = 'profile_detail'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'

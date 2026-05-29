@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Редагувати профіль{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="mb-4">Редагування профілю</h1>
+  <form method="post" enctype="multipart/form-data" class="row g-3">
+    {% csrf_token %}
+
+    <div class="col-12">
+      <h5>Дані користувача</h5>
+    </div>
+    {% for field in user_form %}
+      <div class="col-md-6">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}
+      </div>
+    {% endfor %}
+
+    <div class="col-12 mt-3">
+      <h5>Дані профілю</h5>
+    </div>
+    {% for field in profile_form %}
+      <div class="col-md-6">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+        {% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}
+      </div>
+    {% endfor %}
+
+    <div class="col-12">
+      <button class="btn btn-success" type="submit">Зберегти</button>
+      <a href="{% url 'profile_detail' %}" class="btn btn-outline-secondary">Скасувати</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+

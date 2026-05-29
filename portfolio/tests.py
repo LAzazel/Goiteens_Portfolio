@@ -11,6 +11,13 @@ class PortfolioSmokeTests(TestCase):
         response = self.client.get("/")
         self.assertIn(response.status_code, {200, 302})
 
+    def test_orm_demo_view_loads(self):
+        response = self.client.get(reverse("orm_demo"))
+        self.assertIn(response.status_code, {200, 302})
+
+    def test_orm_aggregations_view_loads(self):
+        response = self.client.get(reverse("orm_aggregations"))
+        self.assertIn(response.status_code, {200, 302})
 
 class OrderTests(TestCase):
     @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend", DEFAULT_FROM_EMAIL="test@example.com")

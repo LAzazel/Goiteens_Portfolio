@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -67,7 +68,7 @@ class Order(models.Model):
     deadline = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="new")
-    processed_by = models.ForeignKey("auth.User", null=True, blank=True, on_delete=models.SET_NULL)
+    processed_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
 
     class Meta:
         ordering = ["-created_at"]
@@ -89,4 +90,3 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review by {self.client_name} ({self.rating})"
-

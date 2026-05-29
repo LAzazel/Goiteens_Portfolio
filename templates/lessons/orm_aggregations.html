@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>Урок: Агрегації та Анотації в Django ORM</h1>
+
+  <section class="mb-4">
+    <h3>Загальні агрегати (aggregate)</h3>
+    <pre>{{ aggregates }}</pre>
+  </section>
+
+  {% for ex in examples %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ ex.title }}</h5>
+        {% if ex.sql %}
+          <p><strong>SQL:</strong> <code style="white-space: pre-wrap;">{{ ex.sql }}</code></p>
+        {% endif %}
+        {% if ex.qs %}
+          <p><strong>Результат (перші 20):</strong></p>
+          <ul>
+            {% for obj in ex.qs %}
+              <li>
+                {{ obj }}
+                {% if obj.review_count %} — reviews: {{ obj.review_count }}{% endif %}
+                {% if obj.avg_rating %} — avg_rating: {{ obj.avg_rating }}{% endif %}
+                {% if obj.top_reviews %} — top_reviews: {{ obj.top_reviews }}{% endif %}
+                {% if obj.processed_count %} — processed: {{ obj.processed_count }}{% endif %}
+                {% if obj.commission %} — commission: {{ obj.commission }}{% endif %}
+              </li>
+            {% empty %}
+              <li>Немає результатів</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+
+</div>
+{% endblock %}
+
